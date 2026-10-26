@@ -51,14 +51,18 @@ system_wide_uninstall() {
 
 # Determine if the installation is local or system-wide
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-if [ -f "$DIR/tone_generator.sh" ]; then
+found_install=0
+if [ -d "$DIR/../venv" ]; then
     # Local installation detected
     local_uninstall
+    found_install=1
 fi
 if [ -f "/usr/local/bin/tone_generator" ]; then
     # System-wide installation detected
     system_wide_uninstall
-else
+    found_install=1
+fi
+if [ "$found_install" -eq 0 ]; then
     echo "No installation detected. Nothing to uninstall."
     exit 1
 fi
