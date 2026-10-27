@@ -1,7 +1,5 @@
 import sys
 import argparse
-from gui.main_gui import ToneGeneratorGUI
-from cli.main_cli import main as cli_main
 
 def main():
     parser = argparse.ArgumentParser(description="Tone Generator Application")
@@ -11,11 +9,13 @@ def main():
     args, unknown = parser.parse_known_args()
 
     if args.mode == "gui":
-        # Launch the GUI application
+        # Launch the GUI application (imported lazily so CLI mode works without tkinter)
+        from gui.main_gui import ToneGeneratorGUI
         app = ToneGeneratorGUI()
         app.mainloop()
     elif args.mode == "cli":
         # Pass unknown arguments to the CLI main function
+        from cli.main_cli import main as cli_main
         sys.argv = [sys.argv[0]] + unknown
         cli_main()
 
